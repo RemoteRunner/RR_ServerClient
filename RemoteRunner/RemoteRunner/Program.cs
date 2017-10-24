@@ -6,68 +6,19 @@ using System.Net.Sockets;
 using RemoteRunner.Services;
 using RemoteRunner.Services.Runner;
 
-namespace Remote_Runner
+namespace RemoteRunner
 {
     internal class Program
     {
         private static readonly SocketManager Socket = new SocketManager(2048, 4199);
-        private static readonly Runner runner = new Runner();
+        private static readonly Runner Runner = new Runner();
         private static int clientCount;
-
-        private static void Setup(string exeName)
-        {
-            var deleteRule = new ProcessStartInfo
-            {
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                FileName = "cmd.exe",
-                Arguments = "/K " + string.Format("netsh advfirewall firewall delete rule name=\"{0}\"",
-                                AppDomain.CurrentDomain.FriendlyName)
-            };
-            using (var proc = new Process())
-            {
-                proc.StartInfo = deleteRule;
-                proc.Start();
-                proc.WaitForExit(1000);
-                //string output = proc.StandardOutput.ReadToEnd();
-
-                //if (string.IsNullOrEmpty(output))
-                //    output = proc.StandardError.ReadToEnd();
-                //return output;
-            }
-            var procStartInfo = new ProcessStartInfo
-            {
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                FileName = "cmd.exe",
-                Arguments = "/K " + string.Format(
-                                "netsh advfirewall firewall add rule dir=in program=\"{0}\" name=\"{1}\" action=allow",
-                                exeName, AppDomain.CurrentDomain.FriendlyName)
-            };
-            using (var proc = new Process())
-            {
-                proc.StartInfo = procStartInfo;
-                proc.Start();
-                proc.WaitForExit(1000);
-                //string output = proc.StandardOutput.ReadToEnd();
-
-                //if (string.IsNullOrEmpty(output))
-                //    output = proc.StandardError.ReadToEnd();
-                //return output;
-            }
-        }
-
+        
         private static void Main(string[] args)
         {
-            //Setup("run.bat");
-            
-            Socket.ClientConnected += socket_ClientConnected;
-            Socket.ClientDissconnected += socket_ClientDisconnected;
-            Socket.ReceivedMessage += socket_ReceivedMessage;
+            Socket.ClientConnected += Socket_ClientConnected;
+            Socket.ClientDissconnected += Socket_ClientDisconnected;
+            Socket.ReceivedMessage += Socket_ReceivedMessage;
             IPAddress[] localIpArray = Dns.GetHostAddresses(Dns.GetHostName());
             IPAddress ipAddress =
                 localIpArray.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork);
@@ -80,7 +31,6 @@ namespace Remote_Runner
             while (true)
             {
                 string c = Console.ReadLine();
-               EnterLog(runner.Run("{ 'command': 'SetCursorPosition', 'params': [{ 'x': '5','y': '65','z': '75' }]}"));
                 Action(c);
                 EnterLog("Enter action");
             }
@@ -101,7 +51,7 @@ namespace Remote_Runner
                 case "StopListen":
                     Socket.StopLisenClients();
                     break;
-                case "close":
+                case "Close":
                     try
                     {
                         Socket.StopLisenClients();
@@ -124,20 +74,20 @@ namespace Remote_Runner
             }
         }
 
-        private static void socket_ReceivedMessage(string Message, TcpClient FromClient)
+        private static void Socket_ReceivedMessage(string message, TcpClient fromClient)
         {
-            EnterLog(Message);
-            EnterLog(runner.Run(Message));
+            EnterLog(message);
+            EnterLog(Runner.Run(message));
         }
 
-        private static void socket_ClientDisconnected(TcpClient Client)
+        private static void Socket_ClientDisconnected(TcpClient client)
         {
             clientCount--;
             EnterLog("Client disconnected");
             EnterLog("Clients:" + clientCount);
         }
 
-        private static void socket_ClientConnected(TcpClient Client)
+        private static void Socket_ClientConnected(TcpClient client)
         {
             clientCount++;
             EnterLog("Client connected");
