@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,12 +15,12 @@ namespace RemoteRunner.Services.Runner
         {
             dynamic stuff = JObject.Parse(message);
             JArray a = JArray.Parse(stuff.@params.ToString());
-            var @params = a.Children().Children().Cast<object>().ToArray();
+            object[] @params = a.Children().Children().Cast<object>().ToArray();
             IDictionary<string, string> paramsDictionary = new Dictionary<string, string>();
             foreach (JProperty param in @params)
                 paramsDictionary.Add(param.Name, param.Value.ToString());
             MethodInfo theMethod = GetType().GetMethod(stuff.command.ToString());
-            return (string)theMethod.Invoke(this, new object[] { paramsDictionary });
+            return (string) theMethod.Invoke(this, new object[] {paramsDictionary});
         }
 
         #region Console
@@ -50,7 +49,7 @@ namespace RemoteRunner.Services.Runner
 
         public string OpenLink(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> { { "cmd", "start " + @params["link"] } });
+            return Console(new Dictionary<string, string> {{"cmd", "start " + @params["link"]}});
         }
 
         #endregion
@@ -236,26 +235,26 @@ namespace RemoteRunner.Services.Runner
         public string LeftClick(IDictionary<string, string> @params)
         {
             SetCursorPosition(@params);
-            mouse_event((int)MouseEventFlags.Leftdown, 0, 0, 0, 0);
-            mouse_event((int)MouseEventFlags.Leftup, 0, 0, 0, 0);
+            mouse_event((int) MouseEventFlags.Leftdown, 0, 0, 0, 0);
+            mouse_event((int) MouseEventFlags.Leftup, 0, 0, 0, 0);
             return bool.TrueString;
         }
 
         public string LeftDoubleClick(IDictionary<string, string> @params)
         {
             SetCursorPosition(@params);
-            mouse_event((int)MouseEventFlags.Leftdown, 0, 0, 0, 0);
-            mouse_event((int)MouseEventFlags.Leftup, 0, 0, 0, 0);
-            mouse_event((int)MouseEventFlags.Leftdown, 0, 0, 0, 0);
-            mouse_event((int)MouseEventFlags.Leftup, 0, 0, 0, 0);
+            mouse_event((int) MouseEventFlags.Leftdown, 0, 0, 0, 0);
+            mouse_event((int) MouseEventFlags.Leftup, 0, 0, 0, 0);
+            mouse_event((int) MouseEventFlags.Leftdown, 0, 0, 0, 0);
+            mouse_event((int) MouseEventFlags.Leftup, 0, 0, 0, 0);
             return bool.TrueString;
         }
 
         public string RightClick(IDictionary<string, string> @params)
         {
             SetCursorPosition(@params);
-            mouse_event((int)MouseEventFlags.Rightdown, 0, 0, 0, 0);
-            mouse_event((int)MouseEventFlags.Rightup, 0, 0, 0, 0);
+            mouse_event((int) MouseEventFlags.Rightdown, 0, 0, 0, 0);
+            mouse_event((int) MouseEventFlags.Rightup, 0, 0, 0, 0);
             return bool.TrueString;
         }
 
@@ -294,22 +293,22 @@ namespace RemoteRunner.Services.Runner
 
         public string ShutDown(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> { { "cmd", "shutdown /s /f /t 0" } });
+            return Console(new Dictionary<string, string> {{"cmd", "shutdown /s /f /t 0"}});
         }
 
         public string Hibernate(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> { { "cmd", "shutdown /h /f /t 0" } });
+            return Console(new Dictionary<string, string> {{"cmd", "shutdown /h /f /t 0"}});
         }
 
         public string LogOff(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> { { "cmd", "shutdown /l /f /t 0" } });
+            return Console(new Dictionary<string, string> {{"cmd", "shutdown /l /f /t 0"}});
         }
 
         public string Restart(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> { { "cmd", "shutdown /r /f /t 0" } });
+            return Console(new Dictionary<string, string> {{"cmd", "shutdown /r /f /t 0"}});
         }
 
         #endregion

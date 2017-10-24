@@ -38,7 +38,7 @@ WriteLiteral(" rel=\"stylesheet\"");
 
 WriteLiteral(" href=\"style.css\"");
 
-WriteLiteral(" />\r\n\t<script");
+WriteLiteral("/>\r\n\t<script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -69,17 +69,17 @@ WriteLiteral(@">
 	</script>
 </head>
 <body>
-	<div");
+<div");
 
 WriteLiteral(" data-role=\"page\"");
 
 WriteLiteral(" data-theme=\"b\"");
 
-WriteLiteral(">\r\n\t\t<form>\r\n\r\n\t\t\t<div");
+WriteLiteral(">\r\n\t<form>\r\n\r\n\t\t<div");
 
 WriteLiteral(" data-role=\"content\"");
 
-WriteLiteral(">\r\n\r\n\t\t\t\t<input");
+WriteLiteral(">\r\n\r\n\t\t\t<input");
 
 WriteLiteral(" type=\"text\"");
 
@@ -89,7 +89,7 @@ WriteLiteral(" name=\"ip\"");
 
 WriteLiteral(" value=\"172.23.176.1\"");
 
-WriteLiteral(" />\r\n\r\n\t\t\t\t<input");
+WriteLiteral("/>\r\n\r\n\t\t\t<input");
 
 WriteLiteral(" type=\"button\"");
 
@@ -99,11 +99,11 @@ WriteLiteral(" value=\"Click\"");
 
 WriteLiteral(" onclick=\"InvokeCSharpWithFormValues(this)\"");
 
-WriteLiteral(" />\r\n\r\n\t\t\t</div>\r\n\r\n\t\t</form>\r\n\t\t<form>\r\n\r\n\t\t\t<div");
+WriteLiteral("/>\r\n\r\n\t\t</div>\r\n\r\n\t</form>\r\n\t<form>\r\n\r\n\t\t<div");
 
 WriteLiteral(" data-role=\"content\"");
 
-WriteLiteral(">\r\n\t\t\t\t<input");
+WriteLiteral(">\r\n\t\t\t<input");
 
 WriteLiteral(" type=\"text\"");
 
@@ -113,7 +113,7 @@ WriteLiteral(" name=\"command\"");
 
 WriteLiteral(" value=\"{ \'command\': \'GetCursorPosition\', \'params\': []}\"");
 
-WriteLiteral(" />\r\n\t\t\t\t<input");
+WriteLiteral("/>\r\n\t\t\t<input");
 
 WriteLiteral(" type=\"button\"");
 
@@ -123,7 +123,7 @@ WriteLiteral(" value=\"Click\"");
 
 WriteLiteral(" onclick=\"InvokeCSharpWithFormValues(this)\"");
 
-WriteLiteral(" />\r\n\t\t\t</div>\r\n\r\n\t\t</form>\r\n\t\t<h1");
+WriteLiteral("/>\r\n\t\t</div>\r\n\r\n\t</form>\r\n\t<h1");
 
 WriteLiteral(" id=\"label\"");
 
@@ -131,12 +131,12 @@ WriteLiteral(">");
 
 
 #line 52 "RazorView.cshtml"
-                  Write(Model.Text);
+              Write(Model.Text);
 
 
 #line default
 #line hidden
-WriteLiteral("</h1>\r\n\t</div>\r\n</body>\r\n</html>\t");
+WriteLiteral("</h1>\r\n</div>\r\n</body>\r\n</html>");
 
 }
 }

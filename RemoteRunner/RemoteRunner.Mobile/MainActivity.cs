@@ -1,29 +1,27 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Net.Sockets;
+using System.Web;
 using Android.App;
-using Android.Content;
-using Android.Runtime;
-using Android.Views;
-using Android.Webkit;
-using Android.Widget;
 using Android.OS;
-using RemoteRunner.Mobile.Views;
+using Android.Webkit;
 using RemoteRunner.Mobile.Models;
+using RemoteRunner.Mobile.Views;
 using RemoteRunner.Services;
-using Void = Java.Lang.Void;
 
 namespace RemoteRunner.Mobile
 {
     public static class Variables
     {
-        public static string IP { get; set; }
+        public static string Ip { get; set; }
     }
 
     [Activity(Label = "Remote Runner", MainLauncher = true)]
     public class MainActivity : Activity
     {
-        SocketManager socket = new SocketManager(2048, 4199);
-        WebView webView;
+        private readonly SocketManager socket = new SocketManager(2048, 4199);
+        private WebView webView;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -38,13 +36,12 @@ namespace RemoteRunner.Mobile
             webView.SetWebViewClient(new HybridWebViewClient(socket, webView));
 
             // Render the view from the type generated from RazorView.cshtml
-            Model1 model = new Model1() { Text = "Command result" };
-            var template = new RazorView() { Model = model };
-            var page = template.GenerateString();
+            var model = new Model1 {Text = "Command result"};
+            var template = new RazorView {Model = model};
+            string page = template.GenerateString();
             // Load the rendered HTML into the view with a base URL 
             // that points to the root of the bundled Assets folder
             webView.LoadDataWithBaseURL("file:///android_asset/", page, "text/html", "UTF-8", null);
-
         }
 
         protected override void OnPause()
@@ -56,7 +53,7 @@ namespace RemoteRunner.Mobile
         protected override void OnResume()
         {
             base.OnResume();
-            socket.Connect(Variables.IP);
+            socket.Connect(Variables.Ip);
         }
 
         private class HybridWebViewClient : WebViewClient
@@ -64,7 +61,7 @@ namespace RemoteRunner.Mobile
             private readonly SocketManager socket;
             private readonly WebView webView;
 
-            public HybridWebViewClient(SocketManager socket,WebView webView)
+            public HybridWebViewClient(SocketManager socket, WebView webView)
             {
                 this.socket = socket;
                 this.webView = webView;
@@ -100,9 +97,9 @@ namespace RemoteRunner.Mobile
                 EnterLog(message);
             }
 
-            public override bool ShouldOverrideUrlLoading(WebView webView, string url)
+            [Obsolete("deprecated")]
+            public override bool ShouldOverrideUrlLoading(WebView view, string url)
             {
-
                 // If the URL is not our own custom scheme, just let the webView load the URL as usual
                 var scheme = "hybrid:";
 
@@ -111,20 +108,20 @@ namespace RemoteRunner.Mobile
 
                 // This handler will treat everything between the protocol and "?"
                 // as the method name.  The querystring has all of the parameters.
-                var resources = url.Substring(scheme.Length).Split('?');
-                var method = resources[0];
-                var parameters = System.Web.HttpUtility.ParseQueryString(resources[1]);
+                string[] resources = url.Substring(scheme.Length).Split('?');
+                string method = resources[0];
+                NameValueCollection parameters = HttpUtility.ParseQueryString(resources[1]);
 
                 if (method == "SendCommand")
                 {
-                    var command = parameters["command"];
+                    string command = parameters["command"];
                     socket.SendMessageToHost(command);
                 }
                 else if (method == "ConnectCommand")
                 {
-                    var ip = parameters["ip"];
+                    string ip = parameters["ip"];
                     socket.Connect(ip);
-                    Variables.IP = ip;
+                    Variables.Ip = ip;
                 }
 
                 return true;
@@ -132,4 +129,3 @@ namespace RemoteRunner.Mobile
         }
     }
 }
-

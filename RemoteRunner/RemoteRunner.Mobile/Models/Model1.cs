@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RemoteRunner.Mobile.Models
+﻿namespace RemoteRunner.Mobile.Models
 {
     public class Model1
     {

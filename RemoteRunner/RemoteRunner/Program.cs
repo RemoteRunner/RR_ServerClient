@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -13,7 +12,7 @@ namespace RemoteRunner
         private static readonly SocketManager Socket = new SocketManager(2048, 4199);
         private static readonly Runner Runner = new Runner();
         private static int clientCount;
-        
+
         private static void Main(string[] args)
         {
             Socket.ClientConnected += Socket_ClientConnected;
