@@ -25,7 +25,7 @@ namespace RemoteRunner
 
             Socket.Host();
             Socket.StartLisenClients();
-            EnterLog($"Server started at {ipAddress}:4199");
+            EnterLog($"Server started at {ipAddress}");
 
             Console.WriteLine("Enter action");
             while (true)
@@ -39,6 +39,7 @@ namespace RemoteRunner
         public static void EnterLog(string ms)
         {
             Console.WriteLine(ms);
+            Socket.SendMessageToAllClients(ms);
         }
 
         private static void Action(string ms)
