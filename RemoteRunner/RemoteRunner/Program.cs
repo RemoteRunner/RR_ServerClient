@@ -28,10 +28,10 @@ namespace RemoteRunner
                 host = "192.168.124.56",
                 password = "123456",
                 user_name = "Vladislav",
-                notifications = "true",
+                notifications = true,
                 widgets = new List<string>(),
                 port = 5234,
-                role="admin"
+                role = Role.admin
             };
             var result = await webService.Register(regUser);
             if (!result)
