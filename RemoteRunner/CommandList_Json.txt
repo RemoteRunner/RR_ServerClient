@@ -1,31 +1,32 @@
 ﻿Хранилище
-"{ 'command': 'ViewFile', 'params': [{ 'filename': '1.txt' }]}"
-"{ 'command': 'EditFile', 'params': [{ 'filename': '1.txt', 'content': 'text' }]}"
-"{ 'command': 'FreeSpace', 'params': []}"
-"{ 'command': 'ClearCache', 'params': []}"
-"{ 'command': 'FormatDrive', 'params': [{ 'disk': 'F','label': 'formattedDrive','filesystem': 'NTFS','quickformat': 'true','compress': 'false' }]}"
-"{ 'command': 'FindDuplicates', 'params': [{ 'root': 'D:/Shared','pattern': 'DevExpress.CodeParser.v17.1.dll' }]}"
+"{ 'command': 'ViewFile', 'params': { 'filename': '1.txt' }}"
+"{ 'command': 'EditFile', 'params': { 'filename': '1.txt', 'content': 'text' }}"
+"{ 'command': 'FreeSpace', 'params': {}}"
+"{ 'command': 'ClearCache', 'params': {}}"
+"{ 'command': 'FormatDrive', 'params': { 'disk': 'F','label': 'formattedDrive','filesystem': 'NTFS','quickformat': 'true','compress': 'false' }}"
+"{ 'command': 'FindDuplicates', 'params': { 'root': 'D:/Shared','pattern': 'DevExpress.CodeParser.v17.1.dll' }}"
 
 Устройства
-"{ 'command': 'GetCursorPosition', 'params': []}"
-"{ 'command': 'SetCursorPosition', 'params': [{ 'x': '5','y': '65' }]}"
-"{ 'command': 'LeftClick', 'params': [{ 'x': '5','y': '65' }]}"
-"{ 'command': 'LeftDoubleClick', 'params': [{ 'x': '5','y': '65' }]}"
-"{ 'command': 'RightClick', 'params': [{ 'x': '5','y': '65' }]}"
+"{ 'command': 'GetCursorPosition', 'params': {}}"
+"{ 'command': 'SetCursorPosition', 'params': { 'x': '5','y': '65' }}"
+"{ 'command': 'LeftClick', 'params': { 'x': '5','y': '65' }}"
+"{ 'command': 'LeftDoubleClick', 'params': { 'x': '5','y': '65' }}"
+"{ 'command': 'RightClick', 'params': { 'x': '5','y': '65' }}"
+"{ 'command': 'Keyboard', 'params': { 'key': 'F1' }}"
 
 Консоль
-{ 'command': 'Console', 'params': [{ 'cmd': 'ipconfig /all' }]}
+{ 'command': 'Console', 'params': { 'cmd': 'ipconfig /all' }}
 
 Процессы
-"{ 'command': 'ProcessList', 'params': []}"
-"{ 'command': 'ProcessKill', 'params': [{ 'id': '13352' }]}"
-"{ 'command': 'ProcessStart', 'params': [{ 'exe': 'D:/Shared/Altium Designer Dev 18.0.0.4115.exe','args': '-u' }]}"
+"{ 'command': 'ProcessList', 'params': {}}"
+"{ 'command': 'ProcessKill', 'params': { 'id': '13352' }}"
+"{ 'command': 'ProcessStart', 'params': { 'exe': 'D:/Shared/Altium Designer Dev 18.0.0.4115.exe','args': '-u' }}"
 
 Браузер
-"{ 'command': 'OpenLink', 'params': [{ 'link': 'http://google.com' }]}"
+"{ 'command': 'OpenLink', 'params': { 'link': 'http://google.com' }}"
 
 Система
-{ 'command': 'ShutDown', 'params': []}
-{ 'command': 'Hibernate', 'params': []}
-{ 'command': 'LogOff', 'params': []}
-{ 'command': 'Restart', 'params': []}
+{ 'command': 'ShutDown', 'params': {}}
+{ 'command': 'Hibernate', 'params': {}}
+{ 'command': 'LogOff', 'params': {}}
+{ 'command': 'Restart', 'params': {}}

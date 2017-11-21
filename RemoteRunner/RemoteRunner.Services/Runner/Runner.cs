@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
+using System.Windows.Forms;
 
 namespace RemoteRunner.Services.Runner
 {
@@ -204,7 +205,7 @@ namespace RemoteRunner.Services.Runner
         private static extern bool SetCursorPos(int x, int y);
 
         public string GetCursorPosition(IDictionary<string, string> @params)
-        {
+        {            
             GetCursorPos(out Point lpPoint);
             return lpPoint.ToString();
         }
@@ -255,6 +256,45 @@ namespace RemoteRunner.Services.Runner
             SetCursorPosition(@params);
             mouse_event((int) MouseEventFlags.Rightdown, 0, 0, 0, 0);
             mouse_event((int) MouseEventFlags.Rightup, 0, 0, 0, 0);
+            return bool.TrueString;
+        }
+
+        private const int KEYEVENTF_EXTENDEDKEY = 0x1;
+        private const int KEYEVENTF_KEYUP = 0x2;
+
+        [DllImport("user32.dll")]
+        private static extern void keybd_event(byte key, byte scan, int flags, int extraInfo);
+        private static void KeyDown(Keys key)
+        {
+            keybd_event(ParseKey(key), 0, 0, 0);
+        }
+
+        private static void KeyUp(Keys key)
+        {
+            keybd_event(ParseKey(key), 0, KEYEVENTF_KEYUP, 0);
+        }
+
+        private static byte ParseKey(Keys key)
+        {
+            // Alt, Shift, and Control need to be changed for API function to work with them
+            switch (key)
+            {
+                case Keys.Alt:
+                    return 18;
+                case Keys.Control:
+                    return 17;
+                case Keys.Shift:
+                    return 16;
+                default:
+                    return (byte)key;
+            }
+        }
+
+        public string Keyboard(IDictionary<string, string> @params)
+        {
+            Enum.TryParse(@params["key"], out Keys key);
+            KeyDown(key);
+            KeyUp(key);
             return bool.TrueString;
         }
 

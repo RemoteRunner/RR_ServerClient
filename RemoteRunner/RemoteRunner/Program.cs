@@ -149,9 +149,9 @@ namespace RemoteRunner
             foreach (var message in commands)
             {
                 EnterLog(message);
-                dynamic stuff = JObject.Parse(message);
                 var commandResultData = Runner.Run(message);
                 EnterLog(commandResultData);
+                dynamic stuff = JObject.Parse(message);
                 var commandResult = new CommandResult
                 {
                     data = commandResultData,
