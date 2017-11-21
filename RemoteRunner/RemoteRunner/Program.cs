@@ -8,6 +8,7 @@ using RemoteRunner.Services.WebService;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace RemoteRunner
 {
@@ -16,32 +17,32 @@ namespace RemoteRunner
         private static readonly SocketManager Socket = new SocketManager(2048, 4199);
         private static readonly Runner Runner = new Runner();
         private static int clientCount;
+        private static User user = null;
 
         private static async Task Main(string[] args)
         {
-            User user = null;
             WebService webService = new WebService();
 
             #region "register"
-            var regUser = new User()
-            {
-                host = "192.168.124.56",
-                password = "123456",
-                user_name = "Vladislav",
-                notifications = true,
-                widgets = new List<string>(),
-                port = 5234,
-                role = Role.admin
-            };
-            var result = await webService.Register(regUser);
-            if (!result)
-            {
-                Console.WriteLine("User creation was not successful :(");
-            }
-            else
-            {
-                Console.WriteLine("User creation was successful");
-            }
+            //var regUser = new User()
+            //{
+            //    host = "192.168.124.56",
+            //    password = "123456",
+            //    user_name = "Vladislav",
+            //    notifications = true,
+            //    widgets = new List<string>(),
+            //    port = 5234,
+            //    role = Role.admin
+            //};
+            //var result = await webService.Register(regUser);
+            //if (!result)
+            //{
+            //    Console.WriteLine("User creation was not successful :(");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("User creation was successful");
+            //}
             #endregion
             Console.WriteLine("Login");
             while (user == null)
@@ -144,12 +145,20 @@ namespace RemoteRunner
         private static async void TimerCallback(Object o)
         {
             var ws = o as WebService;
-            var commands = ws.GetUncomletedCommands();
+            var commands = await ws.GetUncomletedCommandsAsync(user.id);
             foreach (var message in commands)
             {
                 EnterLog(message);
-                var commandResult = Runner.Run(message);
-                EnterLog(commandResult);
+                dynamic stuff = JObject.Parse(message);
+                var commandResultData = Runner.Run(message);
+                EnterLog(commandResultData);
+                var commandResult = new CommandResult
+                {
+                    data = commandResultData,
+                    status = true,
+                    record_id = Convert.ToInt32(stuff.record_id.ToString())
+                };
+
                 await ws.SendCommandResult(commandResult);
             }
 

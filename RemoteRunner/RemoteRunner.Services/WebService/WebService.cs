@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,7 +15,7 @@ namespace RemoteRunner.Services.WebService
         private static readonly HttpClient Client = new HttpClient();
         public WebService()
         {
-            Client.BaseAddress = new Uri("http://rr-test-vlada.herokuapp.com/");
+            Client.BaseAddress = new Uri("https://rr-test-vlada.herokuapp.com/");
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -26,7 +27,6 @@ namespace RemoteRunner.Services.WebService
             if (response.IsSuccessStatusCode)
             {
                 string stream = await response.Content.ReadAsStringAsync();
-                var serializer = new DataContractJsonSerializer(typeof(User));
                 user = JsonConvert.DeserializeObject<User>(stream);
             }
 
@@ -42,18 +42,32 @@ namespace RemoteRunner.Services.WebService
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> SendCommandResult(string message)
+        public async Task<bool> SendCommandResult(CommandResult message)
         {
             string json = JsonConvert.SerializeObject(message);
 
             HttpResponseMessage response =
-                await Client.PostAsync("register", new StringContent(json, Encoding.UTF8, "application/json"));
+                await Client.PostAsync("executed-command-host", new StringContent(json, Encoding.UTF8, "application/json"));
             return response.IsSuccessStatusCode;
         }
 
-        public List<string> GetUncomletedCommands()
+        public async Task<List<string>> GetUncomletedCommandsAsync(int userId)
         {
-            return new List<string>() { "{ 'command': 'Console', 'params': [{ 'cmd': 'ipconfig /all' }]}", "{ 'command': 'GetCursorPosition', 'params': []}" };
+            JArray commands = null;
+            HttpResponseMessage response = await Client.GetAsync($"host-get-list-to-execute?user_id={userId}");
+            if (response.IsSuccessStatusCode)
+            {
+                string stream = await response.Content.ReadAsStringAsync();
+                commands = JsonConvert.DeserializeObject<JArray> (stream);
+            }
+
+            var comList = new List<string>();
+            foreach (var com in commands)
+            {
+                comList.Add(com.ToString());
+            }
+
+            return comList;
         }
     }
 }

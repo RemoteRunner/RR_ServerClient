@@ -4,6 +4,7 @@ namespace RemoteRunner.Services.WebService
 {
     public class User
     {
+        public int id { get; set; }
         public string user_name { get; set; }
         public string password { get; set; }
         public bool notifications { get; set; }

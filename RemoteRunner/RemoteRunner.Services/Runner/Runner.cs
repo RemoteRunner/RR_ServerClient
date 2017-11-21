@@ -14,8 +14,8 @@ namespace RemoteRunner.Services.Runner
         public string Run(string message)
         {
             dynamic stuff = JObject.Parse(message);
-            JArray a = JArray.Parse(stuff.@params.ToString());
-            object[] @params = a.Children().Children().Cast<object>().ToArray();
+            JObject a = JObject.Parse(stuff.@params.ToString());
+            object[] @params = a.Children().Cast<object>().ToArray();
             IDictionary<string, string> paramsDictionary = new Dictionary<string, string>();
             foreach (JProperty param in @params)
                 paramsDictionary.Add(param.Name, param.Value.ToString());
