@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncHelpers.cs" />
+    <Compile Include="HybridWebViewClient.cs" />
     <Compile Include="MainActivity.cs" />
     <AndroidAsset Include="Assets\static\fonts\Roboto-Black.f3fa86e.ttf" />
     <AndroidAsset Include="Assets\static\js\vendor.3c2af182e215db4ac662.js.map" />
@@ -85,14 +86,10 @@
     <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Regular.ttf" />
     <AndroidAsset Include="Assets\static\js\app.9ada38eabbbf25d8669a.js.map" />
     <AndroidAsset Include="Assets\static\js\manifest.14c08deef234aec59197.js.map" />
-    <None Include="GettingStarted.Xamarin" />
+    <Compile Include="Variables.cs" />
     <None Include="packages.config" />
-    <None Include="web.config" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">

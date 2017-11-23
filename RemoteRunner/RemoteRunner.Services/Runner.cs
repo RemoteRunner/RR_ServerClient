@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
 using System.Windows.Forms;
 
-namespace RemoteRunner.Services.Runner
+namespace RemoteRunner.Services
 {
     public class Runner
     {
