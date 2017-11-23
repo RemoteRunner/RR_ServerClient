@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RemoteRunner.Services.WebService
+namespace RemoteRunner.Network.WebService
 {
     public class User
     {

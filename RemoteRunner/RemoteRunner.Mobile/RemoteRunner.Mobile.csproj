@@ -61,6 +61,7 @@
     <Reference Include="System.Web.Services" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncHelpers.cs" />
     <Compile Include="MainActivity.cs" />
     <AndroidAsset Include="Assets\static\fonts\Roboto-Black.f3fa86e.ttf" />
     <AndroidAsset Include="Assets\static\js\vendor.3c2af182e215db4ac662.js.map" />
@@ -121,6 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\static\js\manifest.14c08deef234aec59197.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RemoteRunner.Network\RemoteRunner.Network.csproj">
+      <Project>{b9a747e4-18fe-4f3b-991a-3ff891712c30}</Project>
+      <Name>RemoteRunner.Network</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

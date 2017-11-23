@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-namespace RemoteRunner.Services.WebService
+namespace RemoteRunner.Network.WebService
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum Role

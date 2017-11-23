@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -55,6 +56,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RemoteRunner.Network\RemoteRunner.Network.csproj">
+      <Project>{b9a747e4-18fe-4f3b-991a-3ff891712c30}</Project>
+      <Name>RemoteRunner.Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RemoteRunner.Services\RemoteRunner.Services.csproj">
       <Project>{6e04fcde-0bad-4e98-8166-0f37a7b5ddf9}</Project>
       <Name>RemoteRunner.Services</Name>

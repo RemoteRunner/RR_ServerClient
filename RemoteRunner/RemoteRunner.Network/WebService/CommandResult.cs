@@ -1,4 +1,4 @@
-﻿namespace RemoteRunner.Services.WebService
+﻿namespace RemoteRunner.Network.WebService
 {
     public class CommandResult
     {

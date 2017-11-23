@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace RemoteRunner.Services
+namespace RemoteRunner.Network
 {
     public class SocketManager
     {

@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace RemoteRunner.Services
+namespace RemoteRunner.Network
 {
     public delegate void ReceivedM(string message, TcpClient fromClient);
 
