@@ -5,9 +5,8 @@ using System.Web;
 using Android.App;
 using Android.OS;
 using Android.Webkit;
-using RemoteRunner.Mobile.Models;
-using RemoteRunner.Mobile.Views;
-using RemoteRunner.Services;
+using Android.Widget;
+//using RemoteRunner.Services;
 
 namespace RemoteRunner.Mobile
 {
@@ -19,7 +18,7 @@ namespace RemoteRunner.Mobile
     [Activity(Label = "Remote Runner", MainLauncher = true)]
     public class MainActivity : Activity
     {
-        private readonly SocketManager socket = new SocketManager(2048, 4199);
+        //private readonly SocketManager socket = new SocketManager(2048, 4199);
         private WebView webView;
 
         protected override void OnCreate(Bundle bundle)
@@ -33,48 +32,48 @@ namespace RemoteRunner.Mobile
             webView.Settings.JavaScriptEnabled = true;
 
             // Use subclassed WebViewClient to intercept hybrid native calls
-            webView.SetWebViewClient(new HybridWebViewClient(socket, webView));
+            webView.SetWebViewClient(new HybridWebViewClient(webView));
 
             // Render the view from the type generated from RazorView.cshtml
-            var model = new Model1 {Text = "Command result"};
-            var template = new RazorView {Model = model};
-            string page = template.GenerateString();
-            // Load the rendered HTML into the view with a base URL 
+            webView.LoadUrl("file:///android_asset/index.html");
+		   // Load the rendered HTML into the view with a base URL 
             // that points to the root of the bundled Assets folder
-            webView.LoadDataWithBaseURL("file:///android_asset/", page, "text/html", "UTF-8", null);
+            //webView.LoadDataWithBaseURL("file:///android_asset/", page, "text/html", "UTF-8", null);
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            socket.Dissconnect();
+            //socket.Dissconnect();
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            socket.Connect(Variables.Ip);
+            //socket.Connect(Variables.Ip);
         }
 
         private class HybridWebViewClient : WebViewClient
         {
-            private readonly SocketManager socket;
+            //private readonly SocketManager socket;
             private readonly WebView webView;
 
-            public HybridWebViewClient(SocketManager socket, WebView webView)
+            public HybridWebViewClient(WebView webView)
             {
-                this.socket = socket;
+                //this.socket = socket;
                 this.webView = webView;
-                socket.ReceivedMessage += socket_ReceivedMessage;
-                socket.ConnectedServer += socket_ConnectedServer;
-                socket.HostLost += socket_HostLost;
-                socket.HostRefused += socket_HostRefused;
+                //socket.ReceivedMessage += socket_ReceivedMessage;
+                //socket.ConnectedServer += socket_ConnectedServer;
+                //socket.HostLost += socket_HostLost;
+                //socket.HostRefused += socket_HostRefused;
             }
 
             public void EnterLog(string ms)
             {
+				//return;
                 string js = $"SetLabelText('{ms}');";
                 webView.LoadUrl("javascript:" + js);
+                var c = webView.Url;
             }
 
             private void socket_HostRefused()
@@ -101,10 +100,11 @@ namespace RemoteRunner.Mobile
             public override bool ShouldOverrideUrlLoading(WebView view, string url)
             {
                 // If the URL is not our own custom scheme, just let the webView load the URL as usual
+				//return true;
                 var scheme = "hybrid:";
 
-                if (!url.StartsWith(scheme))
-                    return false;
+                //if (!url.StartsWith(scheme))
+                //    return false;
 
                 // This handler will treat everything between the protocol and "?"
                 // as the method name.  The querystring has all of the parameters.
@@ -115,13 +115,14 @@ namespace RemoteRunner.Mobile
                 if (method == "SendCommand")
                 {
                     string command = parameters["command"];
-                    socket.SendMessageToHost(command);
+                    //socket.SendMessageToHost(command);
                 }
                 else if (method == "ConnectCommand")
                 {
-                    string ip = parameters["ip"];
-                    socket.Connect(ip);
+                    string ip = parameters["password"];
+                    //socket.Connect(ip);
                     Variables.Ip = ip;
+                    EnterLog(ip);
                 }
 
                 return true;

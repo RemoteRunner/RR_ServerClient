@@ -30,6 +30,8 @@
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis />
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>PdbOnly</DebugType>
@@ -60,27 +62,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
+    <AndroidAsset Include="Assets\static\fonts\Roboto-Black.f3fa86e.ttf" />
+    <AndroidAsset Include="Assets\static\js\vendor.3c2af182e215db4ac662.js.map" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-Black.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-BlackItalic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-Bold.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-BoldItalic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-Italic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-Light.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-LightItalic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-Medium.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-MediumItalic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-Regular.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-Thin.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\Roboto-ThinItalic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Bold.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-BoldItalic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Italic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Light.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-LightItalic.ttf" />
+    <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Regular.ttf" />
+    <AndroidAsset Include="Assets\static\js\app.9ada38eabbbf25d8669a.js.map" />
+    <AndroidAsset Include="Assets\static\js\manifest.14c08deef234aec59197.js.map" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config" />
     <None Include="web.config" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Model1.cs" />
-    <None Include="Views\RazorView.cshtml">
-      <Generator>RazorTemplatePreprocessor</Generator>
-      <LastGenOutput>RazorView.cs</LastGenOutput>
-    </None>
-    <Compile Include="Views\RazorView.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>RazorView.cshtml</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="Views\web.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
-    <AndroidAsset Include="Assets\style.css" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -97,10 +108,19 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RemoteRunner.Services\RemoteRunner.Services.csproj">
-      <Project>{ffc72935-281e-46d9-a60d-44784fa8218f}</Project>
-      <Name>RemoteRunner.Services</Name>
-    </ProjectReference>
+    <AndroidAsset Include="Assets\static\css\app.4c01f1f959290a870c91c1d3f5aca26f.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\vendor.3c2af182e215db4ac662.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\app.9ada38eabbbf25d8669a.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\manifest.14c08deef234aec59197.js" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
