@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Net.Sockets;
 using System.Web;
 using Android.Webkit;
@@ -11,8 +10,9 @@ namespace RemoteRunner.Mobile
     public class HybridWebViewClient : WebViewClient
     {
         private readonly SocketManager socket;
+        private readonly WebService webService = new WebService();
         private readonly WebView webView;
-        WebService webService = new WebService();
+
         public HybridWebViewClient(WebView webView, SocketManager socket)
         {
             this.socket = socket;
@@ -25,8 +25,8 @@ namespace RemoteRunner.Mobile
 
         public void EnterLog(string ms)
         {
-            string js = $"ShowResult(\"{ms}\");";
-            webView.EvaluateJavascript(string.Format("javascript: {0}", js), null);
+            var js = $"ShowResult(\"{ms}\");";
+            webView.EvaluateJavascript($"javascript: {js}", null);
         }
 
         private void Socket_HostRefused()
@@ -56,20 +56,20 @@ namespace RemoteRunner.Mobile
             if (!url.StartsWith(scheme))
                 return false;
 
-            string[] resources = url.Substring(scheme.Length).Split('?');
-            string method = resources[0];
-            NameValueCollection parameters = HttpUtility.ParseQueryString(resources[1]);
+            var resources = url.Substring(scheme.Length).Split('?');
+            var method = resources[0];
+            var parameters = HttpUtility.ParseQueryString(resources[1]);
 
             switch (method)
             {
                 case "SendCommand":
-                    string command = parameters["command"];
+                    var command = parameters["command"];
                     socket.SendMessageToHost(command);
                     break;
 
                 case "LoginCommand":
-                    string user_name = parameters["user-name"];
-                    string password = parameters["password"];
+                    var user_name = parameters["user-name"];
+                    var password = parameters["password"];
                     User user = null;
                     user = AsyncHelpers.RunSync(() => webService.Login(user_name, password));
                     if (user == null)
@@ -85,7 +85,7 @@ namespace RemoteRunner.Mobile
                     break;
 
                 case "ConnectCommand":
-                    string ip = parameters["ip"];
+                    var ip = parameters["ip"];
                     socket.Connect(ip);
                     Variables.Ip = ip;
                     break;

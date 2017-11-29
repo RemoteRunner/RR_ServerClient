@@ -105,7 +105,7 @@ namespace RemoteRunner.Network
             }
             catch (Exception e)
             {
-                string m = e.Message;
+                var m = e.Message;
                 if (m.Contains("target machine actively refused"))
                     HostRefused?.Invoke();
                 IsHost = false;
@@ -143,7 +143,7 @@ namespace RemoteRunner.Network
             if (!IsHost)
                 return;
 
-            foreach (TcpClient t in clients)
+            foreach (var t in clients)
                 if (t.Connected)
                     try
                     {
@@ -162,7 +162,7 @@ namespace RemoteRunner.Network
             if (!IsHost)
                 return;
 
-            foreach (TcpClient t in clients)
+            foreach (var t in clients)
                 if (t != cl)
                     if (t.Connected)
                         try
@@ -186,7 +186,7 @@ namespace RemoteRunner.Network
             while (true)
                 try
                 {
-                    TcpClient c = tcpListener.AcceptTcpClient();
+                    var c = tcpListener.AcceptTcpClient();
                     var clientThread = new Thread(() => HandleClient(id, c));
                     ClientConnected?.Invoke(c);
 
@@ -239,7 +239,7 @@ namespace RemoteRunner.Network
             if (!IsHost)
                 return;
 
-            foreach (Thread t in clientThreads)
+            foreach (var t in clientThreads)
                 try
                 {
                     t.Abort();
@@ -249,7 +249,7 @@ namespace RemoteRunner.Network
                     // ignored
                 }
             clientThreads = new Thread[0];
-            foreach (TcpClient t in clients)
+            foreach (var t in clients)
                 try
                 {
                     t.GetStream().Close();
@@ -357,8 +357,8 @@ namespace RemoteRunner.Network
 
         private void GettedMessageFromClient(string p, TcpClient c)
         {
-            string cc = p.Substring(0, 1);
-            string re = p.Substring(1, p.Length - 1);
+            var cc = p.Substring(0, 1);
+            var re = p.Substring(1, p.Length - 1);
             ReceivedMessagex(re, c);
             if (cc == "1")
                 SendMessageToAllClientsExpectClient(re, c);
@@ -366,19 +366,19 @@ namespace RemoteRunner.Network
 
         private void GettedMessageFromHost(string p, TcpClient c)
         {
-            string re = p.Substring(1, p.Length - 1);
+            var re = p.Substring(1, p.Length - 1);
             ReceivedMessagex(re, c);
         }
 
         private static byte[] GetBytes(string str)
         {
-            byte[] toBytes = Encoding.ASCII.GetBytes(str);
+            var toBytes = Encoding.ASCII.GetBytes(str);
             return toBytes;
         }
 
         private string GetString(byte[] bytes)
         {
-            string something = Encoding.ASCII.GetString(bytes);
+            var something = Encoding.ASCII.GetString(bytes);
             return something;
         }
 
@@ -386,7 +386,7 @@ namespace RemoteRunner.Network
         {
             try
             {
-                byte[] datas = GetBytes(statu + m);
+                var datas = GetBytes(statu + m);
                 c.GetStream().Write(datas, 0, datas.Length);
             }
             catch

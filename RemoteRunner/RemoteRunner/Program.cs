@@ -2,27 +2,28 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using RemoteRunner.Network;
-using RemoteRunner.Services;
-using RemoteRunner.Network.WebService;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using RemoteRunner.Network;
+using RemoteRunner.Network.WebService;
+using RemoteRunner.Services;
 
 namespace RemoteRunner
 {
     internal class Program
     {
-        private static readonly SocketManager Socket = new SocketManager(2048, 4199);
+        private static readonly SocketManager Socket = new SocketManager(int.MaxValue, 4199);
         private static readonly Runner Runner = new Runner();
         private static int clientCount;
-        private static User user = null;
+        private static User user;
 
         private static async Task Main(string[] args)
         {
-            WebService webService = new WebService();
+            var webService = new WebService();
 
             #region "register"
+
             //var regUser = new User()
             //{
             //    host = "192.168.124.56",
@@ -42,7 +43,9 @@ namespace RemoteRunner
             //{
             //    Console.WriteLine("User creation was successful");
             //}
+
             #endregion
+
             Console.WriteLine("Login");
             while (user == null)
             {
@@ -51,21 +54,14 @@ namespace RemoteRunner
                 Console.WriteLine("Enter password");
                 var password = Console.ReadLine();
                 user = await webService.Login(name, password);
-                if (user == null)
-                {
-                    Console.WriteLine("Incorrect username/password");
-                }
-                else
-                {
-                    Console.WriteLine("Success");
-                }
+                Console.WriteLine(user == null ? "Incorrect username/password" : "Success");
             }
 
             Socket.ClientConnected += Socket_ClientConnected;
             Socket.ClientDissconnected += Socket_ClientDisconnected;
             Socket.ReceivedMessage += Socket_ReceivedMessage;
-            IPAddress[] localIpArray = Dns.GetHostAddresses(Dns.GetHostName());
-            IPAddress ipAddress =
+            var localIpArray = Dns.GetHostAddresses(Dns.GetHostName());
+            var ipAddress =
                 localIpArray.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork);
 
             Socket.Host();
@@ -73,10 +69,10 @@ namespace RemoteRunner
             EnterLog($"Server started at {ipAddress}");
 
             Console.WriteLine("Enter action");
-            Timer t = new Timer(TimerCallback, webService, 0, 600000);
+            var t = new Timer(TimerCallback, webService, 0, 10 * 60 * 1000); //10 минут
             while (true)
             {
-                string c = Console.ReadLine();
+                var c = Console.ReadLine();
                 Action(c);
                 EnterLog("Enter action");
             }
@@ -141,9 +137,10 @@ namespace RemoteRunner
             EnterLog("Clients:" + clientCount);
         }
 
-        private static async void TimerCallback(Object o)
+        private static async void TimerCallback(object o)
         {
             var ws = o as WebService;
+            await ws.SendUserData(new UserDiskInfo {user_id = user.id}, new UserProcessInfo {user_id = user.id});
             var commands = await ws.GetUncomletedCommandsAsync(user.id);
             foreach (var message in commands)
             {

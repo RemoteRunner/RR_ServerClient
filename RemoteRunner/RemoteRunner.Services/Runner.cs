@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Newtonsoft.Json.Linq;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace RemoteRunner.Services
 {
@@ -16,7 +16,7 @@ namespace RemoteRunner.Services
         {
             dynamic stuff = JObject.Parse(message);
             JObject a = JObject.Parse(stuff.@params.ToString());
-            object[] @params = a.Children().Cast<object>().ToArray();
+            var @params = a.Children().Cast<object>().ToArray();
             IDictionary<string, string> paramsDictionary = new Dictionary<string, string>();
             foreach (JProperty param in @params)
                 paramsDictionary.Add(param.Name, param.Value.ToString());
@@ -36,9 +36,9 @@ namespace RemoteRunner.Services
                     UseShellExecute = false,
                     CreateNoWindow = true
                 };
-            Process procCommand = Process.Start(psiOpt);
-            StreamReader srIncoming = procCommand.StandardOutput;
-            string result = srIncoming.ReadToEnd();
+            var procCommand = Process.Start(psiOpt);
+            var srIncoming = procCommand.StandardOutput;
+            var result = srIncoming.ReadToEnd();
             procCommand.WaitForExit();
 
             return result;
@@ -85,12 +85,12 @@ namespace RemoteRunner.Services
         public string FreeSpace(IDictionary<string, string> @params)
         {
             var vol = "";
-            DriveInfo[] allDrives = DriveInfo.GetDrives();
-            foreach (DriveInfo myDriveInfo in allDrives)
+            var allDrives = DriveInfo.GetDrives();
+            foreach (var myDriveInfo in allDrives)
             {
                 if (!myDriveInfo.IsReady) continue;
                 double free = myDriveInfo.AvailableFreeSpace;
-                double a = free / 1024 / 1024;
+                var a = free / 1024 / 1024;
                 vol += myDriveInfo.Name + ": " + a.ToString("#.## MB") + Environment.NewLine;
             }
 
@@ -118,15 +118,15 @@ namespace RemoteRunner.Services
 
         private static void ClearFolder(DirectoryInfo diPath)
         {
-            foreach (FileInfo fiCurrFile in diPath.GetFiles())
+            foreach (var fiCurrFile in diPath.GetFiles())
                 fiCurrFile.Delete();
-            foreach (DirectoryInfo diSubFolder in diPath.GetDirectories())
+            foreach (var diSubFolder in diPath.GetDirectories())
                 ClearFolder(diSubFolder);
         }
 
         public string FormatDrive(IDictionary<string, string> @params)
         {
-            string drive = @params["disk"] + ":";
+            var drive = @params["disk"] + ":";
             try
             {
                 var psi = new ProcessStartInfo
@@ -148,8 +148,8 @@ namespace RemoteRunner.Services
                 psi.CreateNoWindow = true;
                 psi.RedirectStandardOutput = true;
                 psi.RedirectStandardInput = true;
-                Process formatProcess = Process.Start(psi);
-                StreamWriter swStandardInput = formatProcess.StandardInput;
+                var formatProcess = Process.Start(psi);
+                var swStandardInput = formatProcess.StandardInput;
                 swStandardInput.WriteLine();
                 formatProcess.WaitForExit();
                 return true.ToString();
@@ -170,10 +170,10 @@ namespace RemoteRunner.Services
 
         private void FindInDir(DirectoryInfo dir, string pattern, bool recursive)
         {
-            foreach (FileInfo file in dir.GetFiles(pattern))
+            foreach (var file in dir.GetFiles(pattern))
                 duplicateFilesList.Add(file.FullName);
             if (!recursive) return;
-            foreach (DirectoryInfo subdir in dir.GetDirectories())
+            foreach (var subdir in dir.GetDirectories())
                 FindInDir(subdir, pattern, true);
         }
 
@@ -205,15 +205,15 @@ namespace RemoteRunner.Services
         private static extern bool SetCursorPos(int x, int y);
 
         public string GetCursorPosition(IDictionary<string, string> @params)
-        {            
-            GetCursorPos(out Point lpPoint);
+        {
+            GetCursorPos(out var lpPoint);
             return lpPoint.ToString();
         }
 
         public string SetCursorPosition(IDictionary<string, string> @params)
         {
             SetCursorPos(Convert.ToInt32(@params["x"]), Convert.ToInt32(@params["y"]));
-            GetCursorPos(out Point lpPoint);
+            GetCursorPos(out var lpPoint);
             return lpPoint.ToString();
         }
 
@@ -264,6 +264,7 @@ namespace RemoteRunner.Services
 
         [DllImport("user32.dll")]
         private static extern void keybd_event(byte key, byte scan, int flags, int extraInfo);
+
         private static void KeyDown(Keys key)
         {
             keybd_event(ParseKey(key), 0, 0, 0);
@@ -286,7 +287,7 @@ namespace RemoteRunner.Services
                 case Keys.Shift:
                     return 16;
                 default:
-                    return (byte)key;
+                    return (byte) key;
             }
         }
 
@@ -323,7 +324,7 @@ namespace RemoteRunner.Services
 
         public string ProcessStart(IDictionary<string, string> @params)
         {
-            Process process = Process.Start(@params["exe"], @params["args"]);
+            var process = Process.Start(@params["exe"], @params["args"]);
             return process.Id.ToString();
         }
 
