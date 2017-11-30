@@ -52,8 +52,29 @@ namespace RemoteRunner
                 Console.WriteLine("Enter username");
                 var name = Console.ReadLine();
                 Console.WriteLine("Enter password");
-                var password = Console.ReadLine();
-                user = await webService.Login(name, password);
+                string pass = "";
+                ConsoleKeyInfo key;
+                do
+                {
+                    key = Console.ReadKey(true);
+
+                    if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                    {
+                        pass += key.KeyChar;
+                        Console.Write("*");
+                    }
+                    else
+                    {
+                        if (key.Key == ConsoleKey.Backspace && pass.Length > 0)
+                        {
+                            pass = pass.Substring(0, (pass.Length - 1));
+                            Console.Write("\b \b");
+                        }
+                    }
+                }
+                while (key.Key != ConsoleKey.Enter);
+                Console.WriteLine();
+                user = await webService.Login(name, pass);
                 Console.WriteLine(user == null ? "Incorrect username/password" : "Success");
             }
 
