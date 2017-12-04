@@ -134,14 +134,11 @@ namespace RemoteRunner.Services
                     FileName = "format.com",
                     CreateNoWindow = true,
                     WorkingDirectory = Environment.SystemDirectory,
-                    Arguments = "/FS:" + @params["filesystem"] +
+                    Arguments = "/FS:NTFS" +
                                 " /Y" +
-                                " /V:" + @params["label"] +
-                                (Convert.ToBoolean(@params["quickformat"]) ? " /Q" : "") +
-                                (@params["filesystem"] == "NTFS" && Convert.ToBoolean(@params["compress"])
-                                    ? " /C"
-                                    : "") +
-                                " " + drive,
+                                " /V:Disk" +
+                                " /Q " +
+                                drive,
                     UseShellExecute = false
                 };
                 //if you want to hide the window
