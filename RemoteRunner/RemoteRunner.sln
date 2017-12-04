@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteRunner.Mobile", "RemoteRunner.Mobile\RemoteRunner.Mobile.csproj", "{106CEECB-DA5C-460C-B3C7-CA4118F6D697}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteRunner.Services", "RemoteRunner.Services\RemoteRunner.Services.csproj", "{6E04FCDE-0BAD-4E98-8166-0F37A7B5DDF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteRunner", "RemoteRunner\RemoteRunner.csproj", "{159BC556-8ABE-4B6C-90D3-1598DB1DA791}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteRunner.Host", "RemoteRunner\RemoteRunner.Host.csproj", "{159BC556-8ABE-4B6C-90D3-1598DB1DA791}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteRunner.Network", "RemoteRunner.Network\RemoteRunner.Network.csproj", "{B9A747E4-18FE-4F3B-991A-3FF891712C30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteRunner.Network", "RemoteRunner.Network\RemoteRunner.Network.csproj", "{B9A747E4-18FE-4F3B-991A-3FF891712C30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -15,7 +15,7 @@
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
@@ -44,6 +44,8 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -65,7 +67,6 @@
     <Compile Include="HybridWebViewClient.cs" />
     <Compile Include="MainActivity.cs" />
     <AndroidAsset Include="Assets\static\fonts\Roboto-Black.f3fa86e.ttf" />
-    <AndroidAsset Include="Assets\static\js\vendor.3c2af182e215db4ac662.js.map" />
     <AndroidAsset Include="Assets\static\robotottf\Roboto-Black.ttf" />
     <AndroidAsset Include="Assets\static\robotottf\Roboto-BlackItalic.ttf" />
     <AndroidAsset Include="Assets\static\robotottf\Roboto-Bold.ttf" />
@@ -84,9 +85,10 @@
     <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Light.ttf" />
     <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-LightItalic.ttf" />
     <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Regular.ttf" />
-    <AndroidAsset Include="Assets\static\js\app.9ada38eabbbf25d8669a.js.map" />
-    <AndroidAsset Include="Assets\static\js\manifest.14c08deef234aec59197.js.map" />
     <Compile Include="Variables.cs" />
+    <AndroidAsset Include="Assets\static\js\vendor.aed40379a0aa6801b6b7.js.map" />
+    <AndroidAsset Include="Assets\static\js\app.a2fb9c10149ad518500e.js.map" />
+    <AndroidAsset Include="Assets\static\js\manifest.96586dd9a778f5c78e40.js.map" />
     <None Include="packages.config" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,25 +108,25 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\static\css\app.4c01f1f959290a870c91c1d3f5aca26f.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\static\js\vendor.3c2af182e215db4ac662.js" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\index.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\static\js\app.9ada38eabbbf25d8669a.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\static\js\manifest.14c08deef234aec59197.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RemoteRunner.Network\RemoteRunner.Network.csproj">
       <Project>{b9a747e4-18fe-4f3b-991a-3ff891712c30}</Project>
       <Name>RemoteRunner.Network</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\css\app.ab02d662b3646b9a2d5787d667add6c6.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\app.a2fb9c10149ad518500e.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\manifest.96586dd9a778f5c78e40.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\vendor.aed40379a0aa6801b6b7.js" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

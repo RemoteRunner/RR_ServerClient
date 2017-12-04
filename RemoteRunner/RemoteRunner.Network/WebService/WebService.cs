@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RemoteRunner.Services;
 
 namespace RemoteRunner.Network.WebService
 {
@@ -83,6 +82,16 @@ namespace RemoteRunner.Network.WebService
                     new StringContent(jsonProcess, Encoding.UTF8, "application/json"));
 
             return responseDisk.IsSuccessStatusCode && responseProcess.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> SendHostInfo(HostInfo hostInfo)
+        {
+            var jsonHost = JsonConvert.SerializeObject(hostInfo);
+            var responseHost =
+                await Client.PostAsync("host-settings",
+                    new StringContent(jsonHost, Encoding.UTF8, "application/json"));
+
+            return responseHost.IsSuccessStatusCode;
         }
     }
 }

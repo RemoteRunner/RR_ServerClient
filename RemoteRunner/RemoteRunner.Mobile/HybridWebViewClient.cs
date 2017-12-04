@@ -63,15 +63,14 @@ namespace RemoteRunner.Mobile
             switch (method)
             {
                 case "SendCommand":
-                    var command = parameters["command"];
+                    var command = parameters["params"];
                     socket.SendMessageToHost(command);
                     break;
 
                 case "LoginCommand":
-                    var user_name = parameters["user-name"];
+                    var userName = parameters["user-name"];
                     var password = parameters["password"];
-                    User user = null;
-                    user = AsyncHelpers.RunSync(() => webService.Login(user_name, password));
+                    var user = AsyncHelpers.RunSync(() => webService.Login(userName, password));
                     if (user == null)
                     {
                         EnterLog("Incorrect username/password");
@@ -80,14 +79,10 @@ namespace RemoteRunner.Mobile
                     {
                         EnterLog("Success");
                         Variables.User = user;
+                        socket.Connect(user.host);
+                        Variables.Ip = user.host;
                     }
 
-                    break;
-
-                case "ConnectCommand":
-                    var ip = parameters["ip"];
-                    socket.Connect(ip);
-                    Variables.Ip = ip;
                     break;
             }
 

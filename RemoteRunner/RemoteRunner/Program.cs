@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -17,35 +18,27 @@ namespace RemoteRunner
         private static readonly Runner Runner = new Runner();
         private static int clientCount;
         private static User user;
+        private static WebService webService = new WebService();
+
+        private static async Task Register()
+        {
+            var regUser = new User
+            {
+                host = "192.168.83.1",
+                password = "1",
+                user_name = "1",
+                notifications = true,
+                widgets = new List<string>(),
+                port = 4199,
+                role = Role.user
+            };
+            var result = await webService.Register(regUser);
+            Console.WriteLine(!result ? "User creation was not successful :(" : "User creation was successful");
+        }
 
         private static async Task Main(string[] args)
         {
-            var webService = new WebService();
-
-            #region "register"
-
-            //var regUser = new User()
-            //{
-            //    host = "192.168.124.56",
-            //    password = "123456",
-            //    user_name = "Vladislav",
-            //    notifications = true,
-            //    widgets = new List<string>(),
-            //    port = 5234,
-            //    role = Role.admin
-            //};
-            //var result = await webService.Register(regUser);
-            //if (!result)
-            //{
-            //    Console.WriteLine("User creation was not successful :(");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("User creation was successful");
-            //}
-
-            #endregion
-
+            await Register();
             Console.WriteLine("Login");
             while (user == null)
             {
@@ -87,10 +80,11 @@ namespace RemoteRunner
 
             Socket.Host();
             Socket.StartLisenClients();
+            await webService.SendHostInfo(new HostInfo { host = ipAddress?.ToString(), port = 4199, user_id = user.id });
             EnterLog($"Server started at {ipAddress}");
 
             Console.WriteLine("Enter action");
-            var t = new Timer(TimerCallback, webService, 0, 10 * 60 * 1000); //10 минут
+            var unused = new Timer(TimerCallback, null, 0, 1 * 60 * 1000); //10 минут
             while (true)
             {
                 var c = Console.ReadLine();
@@ -160,9 +154,8 @@ namespace RemoteRunner
 
         private static async void TimerCallback(object o)
         {
-            var ws = o as WebService;
-            await ws.SendUserData(new UserDiskInfo {user_id = user.id}, new UserProcessInfo {user_id = user.id});
-            var commands = await ws.GetUncomletedCommandsAsync(user.id);
+            await webService.SendUserData(new UserDiskInfo { user_id = user.id }, new UserProcessInfo { user_id = user.id });
+            var commands = await webService.GetUncomletedCommandsAsync(user.id);
             foreach (var message in commands)
             {
                 EnterLog(message);
@@ -176,7 +169,7 @@ namespace RemoteRunner
                     record_id = Convert.ToInt32(stuff.record_id.ToString())
                 };
 
-                await ws.SendCommandResult(commandResult);
+                await webService.SendCommandResult(commandResult);
             }
 
             GC.Collect();

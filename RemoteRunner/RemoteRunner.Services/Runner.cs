@@ -21,7 +21,7 @@ namespace RemoteRunner.Services
             foreach (JProperty param in @params)
                 paramsDictionary.Add(param.Name, param.Value.ToString());
             MethodInfo theMethod = GetType().GetMethod(stuff.command.ToString());
-            return (string) theMethod.Invoke(this, new object[] {paramsDictionary});
+            return (string)theMethod.Invoke(this, new object[] { paramsDictionary });
         }
 
         #region Console
@@ -50,7 +50,7 @@ namespace RemoteRunner.Services
 
         public string OpenLink(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> {{"cmd", "start " + @params["link"]}});
+            return Console(new Dictionary<string, string> { { "cmd", "start " + new UriBuilder(@params["link"]) } });
         }
 
         #endregion
@@ -159,6 +159,7 @@ namespace RemoteRunner.Services
 
         public string FindDuplicates(IDictionary<string, string> @params)
         {
+            duplicateFilesList.Clear();
             FindInDir(new DirectoryInfo(@params["root"]), @params["pattern"], true);
             return duplicateFilesList.Aggregate("", (current, s) => current + s + Environment.NewLine);
         }
@@ -167,11 +168,18 @@ namespace RemoteRunner.Services
 
         private void FindInDir(DirectoryInfo dir, string pattern, bool recursive)
         {
-            foreach (var file in dir.GetFiles(pattern))
-                duplicateFilesList.Add(file.FullName);
-            if (!recursive) return;
-            foreach (var subdir in dir.GetDirectories())
-                FindInDir(subdir, pattern, true);
+            try
+            {
+                foreach (var file in dir.GetFiles(pattern))
+                    duplicateFilesList.Add(file.FullName);
+                if (!recursive) return;
+                foreach (var subdir in dir.GetDirectories())
+                    FindInDir(subdir, pattern, true);
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         #endregion
@@ -233,26 +241,26 @@ namespace RemoteRunner.Services
         public string LeftClick(IDictionary<string, string> @params)
         {
             SetCursorPosition(@params);
-            mouse_event((int) MouseEventFlags.Leftdown, 0, 0, 0, 0);
-            mouse_event((int) MouseEventFlags.Leftup, 0, 0, 0, 0);
+            mouse_event((int)MouseEventFlags.Leftdown, 0, 0, 0, 0);
+            mouse_event((int)MouseEventFlags.Leftup, 0, 0, 0, 0);
             return bool.TrueString;
         }
 
         public string LeftDoubleClick(IDictionary<string, string> @params)
         {
             SetCursorPosition(@params);
-            mouse_event((int) MouseEventFlags.Leftdown, 0, 0, 0, 0);
-            mouse_event((int) MouseEventFlags.Leftup, 0, 0, 0, 0);
-            mouse_event((int) MouseEventFlags.Leftdown, 0, 0, 0, 0);
-            mouse_event((int) MouseEventFlags.Leftup, 0, 0, 0, 0);
+            mouse_event((int)MouseEventFlags.Leftdown, 0, 0, 0, 0);
+            mouse_event((int)MouseEventFlags.Leftup, 0, 0, 0, 0);
+            mouse_event((int)MouseEventFlags.Leftdown, 0, 0, 0, 0);
+            mouse_event((int)MouseEventFlags.Leftup, 0, 0, 0, 0);
             return bool.TrueString;
         }
 
         public string RightClick(IDictionary<string, string> @params)
         {
             SetCursorPosition(@params);
-            mouse_event((int) MouseEventFlags.Rightdown, 0, 0, 0, 0);
-            mouse_event((int) MouseEventFlags.Rightup, 0, 0, 0, 0);
+            mouse_event((int)MouseEventFlags.Rightdown, 0, 0, 0, 0);
+            mouse_event((int)MouseEventFlags.Rightup, 0, 0, 0, 0);
             return bool.TrueString;
         }
 
@@ -284,7 +292,7 @@ namespace RemoteRunner.Services
                 case Keys.Shift:
                     return 16;
                 default:
-                    return (byte) key;
+                    return (byte)key;
             }
         }
 
@@ -331,22 +339,22 @@ namespace RemoteRunner.Services
 
         public string ShutDown(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> {{"cmd", "shutdown /s /f /t 0"}});
+            return Console(new Dictionary<string, string> { { "cmd", "shutdown /s /f /t 0" } });
         }
 
         public string Hibernate(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> {{"cmd", "shutdown /h /f /t 0"}});
+            return Console(new Dictionary<string, string> { { "cmd", "shutdown /h /f /t 0" } });
         }
 
         public string LogOff(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> {{"cmd", "shutdown /l /f /t 0"}});
+            return Console(new Dictionary<string, string> { { "cmd", "shutdown /l /f /t 0" } });
         }
 
         public string Restart(IDictionary<string, string> @params)
         {
-            return Console(new Dictionary<string, string> {{"cmd", "shutdown /r /f /t 0"}});
+            return Console(new Dictionary<string, string> { { "cmd", "shutdown /r /f /t 0" } });
         }
 
         #endregion
