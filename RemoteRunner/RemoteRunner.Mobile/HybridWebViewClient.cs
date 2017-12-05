@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Web;
+using Android.App;
 using Android.Webkit;
+using Java.Lang;
+using Newtonsoft.Json.Linq;
 using RemoteRunner.Network;
 using RemoteRunner.Network.WebService;
 
@@ -10,12 +15,14 @@ namespace RemoteRunner.Mobile
     public class HybridWebViewClient : WebViewClient
     {
         private readonly SocketManager socket;
+        private readonly Activity _activity;
         private readonly WebService webService = new WebService();
         private readonly WebView webView;
 
-        public HybridWebViewClient(WebView webView, SocketManager socket)
+        public HybridWebViewClient(WebView webView, SocketManager socket, Activity activity)
         {
             this.socket = socket;
+            _activity = activity;
             this.webView = webView;
             socket.ReceivedMessage += Socket_ReceivedMessage;
             socket.ConnectedServer += Socket_ConnectedServer;
@@ -25,8 +32,10 @@ namespace RemoteRunner.Mobile
 
         public void EnterLog(string ms)
         {
-            var js = $"ShowResult(\"{ms}\");";
-            webView.EvaluateJavascript($"javascript: {js}", null);
+            _activity.RunOnUiThread(() => {
+                var js = $"ShowResult(\"{ms}\");";
+                webView.EvaluateJavascript($"javascript: {js}", null);
+            });
         }
 
         private void Socket_HostRefused()
@@ -68,8 +77,14 @@ namespace RemoteRunner.Mobile
                     break;
 
                 case "LoginCommand":
-                    var userName = parameters["user-name"];
-                    var password = parameters["password"];
+                    dynamic stuff = JObject.Parse(parameters["params"]);
+                    JObject a = JObject.Parse(stuff.@params.ToString());
+                    var @params = a.Children().Cast<object>().ToArray();
+                    IDictionary<string, string> paramsDictionary = new Dictionary<string, string>();
+                    foreach (JProperty param in @params)
+                        paramsDictionary.Add(param.Name, param.Value.ToString());
+                    var userName = paramsDictionary["user_name"];
+                    var password = paramsDictionary["password"];
                     var user = AsyncHelpers.RunSync(() => webService.Login(userName, password));
                     if (user == null)
                     {

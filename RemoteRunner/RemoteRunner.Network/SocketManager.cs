@@ -186,6 +186,13 @@ namespace RemoteRunner.Network
             while (true)
                 try
                 {
+                    try
+                    {
+                        tcpListener.Start();
+                    }
+                    catch (Exception e)
+                    {
+                    }
                     var c = tcpListener.AcceptTcpClient();
                     var clientThread = new Thread(() => HandleClient(id, c));
                     ClientConnected?.Invoke(c);

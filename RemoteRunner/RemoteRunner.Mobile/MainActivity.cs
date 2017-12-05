@@ -9,7 +9,7 @@ namespace RemoteRunner.Mobile
         Theme = "@android:style/Theme.NoTitleBar.Fullscreen")]
     public class MainActivity : Activity
     {
-        private readonly SocketManager socket = new SocketManager(int.MaxValue, 4199);
+        private readonly SocketManager socket = new SocketManager(2048, 4199);
         private WebView webView;
 
         protected override void OnCreate(Bundle bundle)
@@ -20,7 +20,7 @@ namespace RemoteRunner.Mobile
             webView = FindViewById<WebView>(Resource.Id.webView);
             webView.Settings.JavaScriptEnabled = true;
             webView.Settings.DomStorageEnabled = true;
-            webView.SetWebViewClient(new HybridWebViewClient(webView, socket));
+            webView.SetWebViewClient(new HybridWebViewClient(webView, socket, this));
             webView.SetWebChromeClient(new WebChromeClient());
 
             webView.LoadUrl("file:///android_asset/index.html");
@@ -35,7 +35,8 @@ namespace RemoteRunner.Mobile
         protected override void OnResume()
         {
             base.OnResume();
-            socket.Connect(Variables.Ip);
+            if (!string.IsNullOrWhiteSpace(Variables.Ip))
+                socket.Connect(Variables.Ip);
         }
 
         public override void OnBackPressed()

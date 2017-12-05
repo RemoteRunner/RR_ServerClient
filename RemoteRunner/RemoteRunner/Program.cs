@@ -14,7 +14,7 @@ namespace RemoteRunner
 {
     internal class Program
     {
-        private static readonly SocketManager Socket = new SocketManager(int.MaxValue, 4199);
+        private static readonly SocketManager Socket = new SocketManager(2048, 4199);
         private static readonly Runner Runner = new Runner();
         private static int clientCount;
         private static User user;
