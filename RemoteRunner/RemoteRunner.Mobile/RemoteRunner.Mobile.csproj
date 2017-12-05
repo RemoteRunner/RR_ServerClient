@@ -87,9 +87,11 @@
     <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Regular.ttf" />
     <Compile Include="Variables.cs" />
     <AndroidAsset Include="Assets\static\js\vendor.aed40379a0aa6801b6b7.js.map" />
-    <AndroidAsset Include="Assets\static\js\app.a2fb9c10149ad518500e.js.map" />
-    <AndroidAsset Include="Assets\static\js\manifest.96586dd9a778f5c78e40.js.map" />
-    <None Include="packages.config" />
+    <AndroidAsset Include="Assets\static\js\app.561c6f34429342d8df33.js.map" />
+    <AndroidAsset Include="Assets\static\js\manifest.44295fa5a2b11bf03dc5.js.map" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -117,16 +119,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\static\css\app.ab02d662b3646b9a2d5787d667add6c6.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\static\js\app.a2fb9c10149ad518500e.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\static\js\manifest.96586dd9a778f5c78e40.js" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\static\js\vendor.aed40379a0aa6801b6b7.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\app.561c6f34429342d8df33.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\manifest.44295fa5a2b11bf03dc5.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\css\app.bdf83e4d8dec044d8862feacb905aff0.css" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
