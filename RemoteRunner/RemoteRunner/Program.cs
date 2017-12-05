@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -18,8 +21,53 @@ namespace RemoteRunner
         private static readonly Runner Runner = new Runner();
         private static int clientCount;
         private static User user;
-        private static WebService webService = new WebService();
 
+        private static void RegisterFireWall(string programPath)
+        {
+            var deleteRule = new ProcessStartInfo
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                FileName = "cmd.exe",
+                Arguments = "/K " + string.Format("netsh advfirewall firewall delete rule name=\"{0}\"",
+                                AppDomain.CurrentDomain.FriendlyName)
+            };
+            using (var proc = new Process())
+            {
+                proc.StartInfo = deleteRule;
+                proc.Start();
+                proc.WaitForExit(1000);
+                //string output = proc.StandardOutput.ReadToEnd();
+
+                //if (string.IsNullOrEmpty(output))
+                //    output = proc.StandardError.ReadToEnd();
+                //return output;
+            }
+            var procStartInfo = new ProcessStartInfo
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                FileName = "cmd.exe",
+                Arguments = "/K " + string.Format(
+                                "netsh advfirewall firewall add rule dir=in program=\"{0}\" name=\"{1}\" action=allow",
+                                programPath, AppDomain.CurrentDomain.FriendlyName)
+            };
+            using (var proc = new Process())
+            {
+                proc.StartInfo = procStartInfo;
+                proc.Start();
+                proc.WaitForExit(1000);
+                //string output = proc.StandardOutput.ReadToEnd();
+
+                //if (string.IsNullOrEmpty(output))
+                //    output = proc.StandardError.ReadToEnd();
+                //return output;
+            }
+        }
         private static async Task Register()
         {
             var regUser = new User
@@ -32,12 +80,22 @@ namespace RemoteRunner
                 port = 4199,
                 role = Role.user
             };
-            var result = await webService.Register(regUser);
-            Console.WriteLine(!result ? "User creation was not successful :(" : "User creation was successful");
+            //   var result = await webService.Register(regUser);
+            //   Console.WriteLine(!result ? "User creation was not successful :(" : "User creation was successful");
         }
 
         private static async Task Main(string[] args)
         {
+            try
+            {
+                Console.WriteLine(Environment.GetCommandLineArgs()[1]);
+                RegisterFireWall(Environment.GetCommandLineArgs()[0]);
+            }
+            catch (Exception e)
+            {
+            }
+
+            var webService = new WebService();
             Console.WriteLine("Login");
             while (user == null)
             {
@@ -76,14 +134,20 @@ namespace RemoteRunner
             var localIpArray = Dns.GetHostAddresses(Dns.GetHostName());
             var ipAddress =
                 localIpArray.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork);
+            foreach (var ip in localIpArray.Where(address => address.AddressFamily == AddressFamily.InterNetwork).ToList())
+            {
+                Console.WriteLine(ip);
+            }
 
+            Console.WriteLine("Enter ipAdress");
+            Socket.Ip = Console.ReadLine();
             Socket.Host();
             Socket.StartLisenClients();
-            await webService.SendHostInfo(new HostInfo { host = ipAddress?.ToString(), port = 4199, user_id = user.id });
-            EnterLog($"Server started at {ipAddress}");
+            await webService.SendHostInfo(new HostInfo { host = Socket.Ip, port = 4199, user_id = user.id });
+            EnterLog($"Server started at {Socket.Ip}");
 
             Console.WriteLine("Enter action");
-            var unused = new Timer(TimerCallback, null, 0, 1 * 60 * 1000); //10 минут
+            var t = new Timer(TimerCallback, webService, 0, 30 * 1000); //10 минут
             while (true)
             {
                 var c = Console.ReadLine();
@@ -153,6 +217,8 @@ namespace RemoteRunner
 
         private static async void TimerCallback(object o)
         {
+            Console.WriteLine("ping web site");
+            var webService = o as WebService;
             await webService.SendUserData(new UserDiskInfo { user_id = user.id }, new UserProcessInfo { user_id = user.id });
             var commands = await webService.GetUncomletedCommandsAsync(user.id);
             foreach (var message in commands)

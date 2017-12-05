@@ -32,7 +32,8 @@ namespace RemoteRunner.Mobile
 
         public void EnterLog(string ms)
         {
-            _activity.RunOnUiThread(() => {
+            _activity.RunOnUiThread(() =>
+            {
                 var js = $"ShowResult(\"{ms}\");";
                 webView.EvaluateJavascript($"javascript: {js}", null);
             });
@@ -94,7 +95,7 @@ namespace RemoteRunner.Mobile
                     {
                         EnterLog("Success");
                         Variables.User = user;
-                        socket.Connect(user.host);
+                        if (!socket.Connect(user.host)) EnterLog("Connection timeout error");
                         Variables.Ip = user.host;
                     }
 

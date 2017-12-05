@@ -54,7 +54,7 @@ namespace RemoteRunner.Network
                 throw new ArgumentException("You are already hosted, you have to restart to host again", "original");
             try
             {
-                tcpListener = new TcpListener(new IPEndPoint(IPAddress.Any, Port));
+                tcpListener = new TcpListener(new IPEndPoint(IPAddress.Parse(Ip), Port));
                 listener = new Thread(StartListenClients);
                 listener.Start();
                 IsHost = true;
@@ -89,15 +89,15 @@ namespace RemoteRunner.Network
             }
         }
 
-        public void Connect(string ip)
+        public bool Connect(string ip)
         {
             if (Connected)
-                return;
+                return true;
             Ip = ip;
             try
             {
                 IsHost = false;
-                hostClient.Connect(ip, Port);
+                if (!hostClient.ConnectAsync(ip, Port).Wait(1000)) return false;
                 listenHost = new Thread(StartListenHost);
                 listenHost.Start();
                 Connected = true;
@@ -111,6 +111,8 @@ namespace RemoteRunner.Network
                 IsHost = false;
                 Connected = false;
             }
+
+            return Connected;
         }
 
         private void ReceivedMessagex(string m, TcpClient c)
