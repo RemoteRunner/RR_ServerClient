@@ -38,7 +38,6 @@ namespace RemoteRunner
 
         private static async Task Main(string[] args)
         {
-            await Register();
             Console.WriteLine("Login");
             while (user == null)
             {
