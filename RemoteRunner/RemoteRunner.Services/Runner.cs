@@ -161,7 +161,7 @@ namespace RemoteRunner.Services
         {
             duplicateFilesList.Clear();
             FindInDir(new DirectoryInfo(@params["root"]), @params["pattern"], true);
-            return duplicateFilesList.Aggregate("", (current, s) => current + s + Environment.NewLine);
+            return duplicateFilesList.Aggregate("", (current, s) => current + s.Replace("\\","\\\\") + ";");
         }
 
         private readonly List<string> duplicateFilesList = new List<string>();
