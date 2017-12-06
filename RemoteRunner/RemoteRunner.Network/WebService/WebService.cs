@@ -73,12 +73,12 @@ namespace RemoteRunner.Network.WebService
         {
             var jsonDisk = JsonConvert.SerializeObject(diskInfo);
             var responseDisk =
-                await Client.PostAsync("process-list",
+                await Client.PostAsync("disks-list",
                     new StringContent(jsonDisk, Encoding.UTF8, "application/json"));
 
             var jsonProcess = JsonConvert.SerializeObject(processInfo);
             var responseProcess =
-                await Client.PostAsync("disks-list",
+                await Client.PostAsync("processes-list",
                     new StringContent(jsonProcess, Encoding.UTF8, "application/json"));
 
             return responseDisk.IsSuccessStatusCode && responseProcess.IsSuccessStatusCode;
