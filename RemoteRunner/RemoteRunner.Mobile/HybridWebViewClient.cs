@@ -95,8 +95,7 @@ namespace RemoteRunner.Mobile
                     {
                         EnterLog("Success");
                         Variables.User = user;
-                        if (!socket.Connect(user.host)) EnterLog("Connection timeout error");
-                        Variables.Ip = user.host;
+                        if (!socket.Connect(user.host,user.port)) EnterLog("Connection timeout error");
                     }
 
                     break;

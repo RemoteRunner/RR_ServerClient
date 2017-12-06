@@ -33,10 +33,9 @@ namespace RemoteRunner.Network
         public int Port;
         private TcpListener tcpListener;
 
-        public SocketManager(int maxLengthOfMessages, int port)
+        public SocketManager(int maxLengthOfMessages)
         {
             messageMaxLength = maxLengthOfMessages;
-            Port = port;
         }
 
         public event ReceivedM ReceivedMessage;
@@ -89,15 +88,16 @@ namespace RemoteRunner.Network
             }
         }
 
-        public bool Connect(string ip)
+        public bool Connect(string ip, int port)
         {
             if (Connected)
                 return true;
             Ip = ip;
+            Port = port;
             try
             {
                 IsHost = false;
-                if (!hostClient.ConnectAsync(ip, Port).Wait(1000)) return false;
+                if (!hostClient.ConnectAsync(Ip, Port).Wait(1000)) return false;
                 listenHost = new Thread(StartListenHost);
                 listenHost.Start();
                 Connected = true;
@@ -192,9 +192,11 @@ namespace RemoteRunner.Network
                     {
                         tcpListener.Start();
                     }
-                    catch (Exception e)
+                    catch
                     {
+                        // ignored
                     }
+
                     var c = tcpListener.AcceptTcpClient();
                     var clientThread = new Thread(() => HandleClient(id, c));
                     ClientConnected?.Invoke(c);

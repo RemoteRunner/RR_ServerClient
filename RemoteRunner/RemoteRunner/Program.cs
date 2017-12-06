@@ -17,7 +17,7 @@ namespace RemoteRunner
 {
     internal class Program
     {
-        private static readonly SocketManager Socket = new SocketManager(2048, 4199);
+        private static readonly SocketManager Socket = new SocketManager(2048);
         private static readonly Runner Runner = new Runner();
         private static int clientCount;
         private static User user;
@@ -68,7 +68,7 @@ namespace RemoteRunner
                 //return output;
             }
         }
-        private static async Task Register()
+        private static async Task Register(WebService webService)
         {
             var regUser = new User
             {
@@ -80,19 +80,17 @@ namespace RemoteRunner
                 port = 4199,
                 role = Role.user
             };
-            //   var result = await webService.Register(regUser);
-            //   Console.WriteLine(!result ? "User creation was not successful :(" : "User creation was successful");
+            var result = await webService.Register(regUser);
+            Console.WriteLine(!result ? "User creation was not successful :(" : "User creation was successful");
         }
 
-        private static async Task Main(string[] args)
+        private static async Task Main()
         {
-            try
+            if (Environment.GetCommandLineArgs().Length > 1)
             {
-                Console.WriteLine(Environment.GetCommandLineArgs()[1]);
                 RegisterFireWall(Environment.GetCommandLineArgs()[0]);
-            }
-            catch (Exception e)
-            {
+                Process.Start(Environment.GetCommandLineArgs()[0]);
+                Process.GetCurrentProcess().Kill();
             }
 
             var webService = new WebService();
@@ -141,13 +139,15 @@ namespace RemoteRunner
 
             Console.WriteLine("Enter ipAdress");
             Socket.Ip = Console.ReadLine();
+            Console.WriteLine("Enter port");
+            Socket.Port = int.Parse(Console.ReadLine());
             Socket.Host();
             Socket.StartLisenClients();
-            await webService.SendHostInfo(new HostInfo { host = Socket.Ip, port = 4199, user_id = user.id });
-            EnterLog($"Server started at {Socket.Ip}");
+            await webService.SendHostInfo(new HostInfo { host = Socket.Ip, port = Socket.Port, user_id = user.id });
+            EnterLog($"Server started at {Socket.Ip}:{Socket.Port}");
 
             Console.WriteLine("Enter action");
-            var t = new Timer(TimerCallback, webService, 0, 30 * 1000); //10 минут
+            var t = new Timer(TimerCallback, webService, 0, 60 * 1000); //1 минута
             while (true)
             {
                 var c = Console.ReadLine();

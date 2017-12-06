@@ -9,7 +9,7 @@ namespace RemoteRunner.Mobile
         Theme = "@android:style/Theme.NoTitleBar.Fullscreen")]
     public class MainActivity : Activity
     {
-        private readonly SocketManager socket = new SocketManager(2048, 4199);
+        private readonly SocketManager socket = new SocketManager(2048);
         private WebView webView;
 
         protected override void OnCreate(Bundle bundle)
@@ -35,8 +35,8 @@ namespace RemoteRunner.Mobile
         protected override void OnResume()
         {
             base.OnResume();
-            if (!string.IsNullOrWhiteSpace(Variables.Ip))
-                socket.Connect(Variables.Ip);
+            if (!string.IsNullOrWhiteSpace(Variables.User.host))
+                socket.Connect(Variables.User.host, Variables.User.port);
         }
 
         public override void OnBackPressed()
