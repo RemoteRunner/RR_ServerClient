@@ -35,7 +35,7 @@ namespace RemoteRunner.Mobile
         protected override void OnResume()
         {
             base.OnResume();
-            if (!string.IsNullOrWhiteSpace(Variables.User.host))
+            if (Variables.User != null)
                 socket.Connect(Variables.User.host, Variables.User.port);
         }
 
