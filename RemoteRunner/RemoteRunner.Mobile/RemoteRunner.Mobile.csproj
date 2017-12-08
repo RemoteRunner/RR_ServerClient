@@ -86,9 +86,9 @@
     <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-LightItalic.ttf" />
     <AndroidAsset Include="Assets\static\robotottf\RobotoCondensed-Regular.ttf" />
     <Compile Include="Variables.cs" />
-    <AndroidAsset Include="Assets\static\js\vendor.aed40379a0aa6801b6b7.js.map" />
-    <AndroidAsset Include="Assets\static\js\app.561c6f34429342d8df33.js.map" />
-    <AndroidAsset Include="Assets\static\js\manifest.44295fa5a2b11bf03dc5.js.map" />
+    <AndroidAsset Include="Assets\static\js\app.283a667165397e360f2b.js.map" />
+    <AndroidAsset Include="Assets\static\js\manifest.abfd045e6149cab007fc.js.map" />
+    <AndroidAsset Include="Assets\static\js\vendor.a0a9a8e74b934829f4a1.js.map" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -119,16 +119,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\static\js\vendor.aed40379a0aa6801b6b7.js" />
+    <AndroidAsset Include="Assets\static\favicon-16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\static\js\app.561c6f34429342d8df33.js" />
+    <AndroidAsset Include="Assets\static\favicon-32x32.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\static\js\manifest.44295fa5a2b11bf03dc5.js" />
+    <AndroidAsset Include="Assets\static\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\static\css\app.bdf83e4d8dec044d8862feacb905aff0.css" />
+    <AndroidAsset Include="Assets\static\robots.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\googleefb08bd7c327b4cd.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\css\app.6d5d0c3a223dc150faa1423cf45ac346.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\app.283a667165397e360f2b.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\manifest.abfd045e6149cab007fc.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\static\js\vendor.a0a9a8e74b934829f4a1.js" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,22 +2,53 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="description" content="Remote Runner is a program for remote Control of your PC. Our vision is to help our clients succeed no matter what happens. Remote Control system like Remote Runner exactly can do that. It doesn't depend on how far you are from home, you can always connect by Remote Runner through Wi-Fi and perform anything you need.">
+    <meta name="keywords" content="Remote Control, Vue, Node, Xamarin, .NET">
+    <meta name="author" content="V. Tyshchenko, V. Antonyuk, V. Sazonov">
+    <meta name="robots" content="index">
     <title>Remote Runner</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link href="./static/css/app.bdf83e4d8dec044d8862feacb905aff0.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="static/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="static/favicon-16x16.png" sizes="16x16">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="./static/css/app.6d5d0c3a223dc150faa1423cf45ac346.css" rel="stylesheet">
 </head>
 <body>
     <div id="app"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
-    <script type="text/javascript">
-        function ShowResult(text) {
-            alert(text);
+    <script>
+        function
+                                                                                                                                                                                                                    ShowResult(text) {
+            toastr.options =
+                {
+                    "closeButton":false,
+                    "debug":false,
+                    "newestOnTop":false,
+                    "progressBar":false,
+                    "positionClass":"toast-top-full-width",
+                    "preventDuplicates":false,
+                    "onclick":null,
+                    "showDuration":"2000",
+                    "hideDuration":"1000",
+                    "timeOut":"5000",
+                    "extendedTimeOut":"1000",
+                    "showEasing":"swing",
+                    "hideEasing":"linear",
+                    "showMethod":"show",
+                    "hideMethod":"hide"
+                };
+
+            toastr.info(text);
         }
     </script>
-    <script type="text/javascript" src="./static/js/manifest.44295fa5a2b11bf03dc5.js"></script>
-    <script type="text/javascript" src="./static/js/vendor.aed40379a0aa6801b6b7.js"></script>
-    <script type="text/javascript" src="./static/js/app.561c6f34429342d8df33.js"></script>
+    <script type="text/javascript" src="./static/js/manifest.abfd045e6149cab007fc.js">
+    </script>
+    <script type="text/javascript" src="./static/js/vendor.a0a9a8e74b934829f4a1.js"></script>
+    <script type="text/javascript" src="./static/js/app.283a667165397e360f2b.js">
+    </script>
 </body>
 </html>
